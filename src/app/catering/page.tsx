@@ -17,7 +17,7 @@ const iconMap: Record<string, React.ElementType> = {
 const packages = [
   {
     name: "Essentiel",
-    price: "À partir de 5,000,000 GNF",
+    price: "À partir de 500,000 GNF",
     description: "Idéal pour les événements de 30-50 personnes",
     features: [
       "Menu 3 services",
@@ -29,7 +29,7 @@ const packages = [
   },
   {
     name: "Premium",
-    price: "À partir de 10,000,000 GNF",
+    price: "À partir de 1,000,000 GNF",
     description: "Parfait pour les événements de 50-150 personnes",
     features: [
       "Menu 5 services",
