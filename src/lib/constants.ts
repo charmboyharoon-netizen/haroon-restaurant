@@ -31,7 +31,7 @@ export const MENU_ITEMS = [
     description: "Salade fraîche aux saveurs africaines avec vinaigrette maison",
     price: 35000,
     category: "starters",
-    image: "https://images.pexels.com/photos/35336025/pexels-photo-35336025.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600",
+    image: "https://dctqvomciirmjrkyrihe.supabase.co/storage/v1/object/public/resto%20photos%20delice/images.jpg,
     available: true,
     featured: true,
   },
