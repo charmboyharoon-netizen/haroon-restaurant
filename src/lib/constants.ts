@@ -53,7 +53,7 @@ export const MENU_ITEMS = [
     description: "Rouleaux de printemps croustillants farcis de légumes frais",
     price: 10000,
     category: "starters",
-    image: "https://images.pexels.com/photos/37492317/pexels-photo-37492317.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600",
+    image: "https://dctqvomciirmjrkyrihe.supabase.co/storage/v1/object/public/spring%20rolls/images%20(2).jpg",
     available: true,
     featured: false,
   },
