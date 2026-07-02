@@ -85,7 +85,7 @@ export function AboutSection() {
           >
             <div className="relative rounded-3xl overflow-hidden aspect-[4/3]">
               <Image
-                src="https://images.pexels.com/photos/28736731/pexels-photo-28736731.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=800"
+                src="https://dctqvomciirmjrkyrihe.supabase.co/storage/v1/object/public/backround%20home%20page/images%20(22).jpg"
                 alt="Cuisine Africaine Authentique"
                 fill
                 className="object-cover"
