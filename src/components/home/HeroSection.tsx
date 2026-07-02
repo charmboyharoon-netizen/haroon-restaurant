@@ -20,7 +20,7 @@ export function HeroSection() {
       {/* Parallax Background */}
       <motion.div style={{ y }} className="absolute inset-0 parallax-slow">
         <Image
-          src="https://images.pexels.com/photos/34104580/pexels-photo-34104580.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920"
+          src="https://dctqvomciirmjrkyrihe.supabase.co/storage/v1/object/public/backround%20home%20page/images%20(22).jpg"
           alt="Délices d'Africana - Cuisine Africaine Premium"
           fill
           priority
