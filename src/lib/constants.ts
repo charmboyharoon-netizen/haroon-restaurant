@@ -186,7 +186,7 @@ export const MENU_ITEMS = [
     name: "Fresh Pineapple Juice",
     nameEn: "Fresh Pineapple Juice",
     description: "Jus d'ananas frais pressé naturellement sans sucre ajouté",
-    price: 20000,
+    price: 30000,
     category: "drinks",
     image: "https://dctqvomciirmjrkyrihe.supabase.co/storage/v1/object/public/Fresh%20Pineapple%20Juic/images%20(12).jpg",
     available: true,
