@@ -15,13 +15,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "plus.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "dctqvomciirmjrkyrihe.supabase.co",
+      },
     ],
   },
 };
 
 export default nextConfig;
-module.exports = {
-  images: {
-    domains: ["dctqvomciirmjrkyrihe.supabase.co"],
-  },
-};

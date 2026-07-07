@@ -9,36 +9,10 @@ import { useCart } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/utils";
 import { showToast } from "@/components/ui/Toaster";
 
-const PAYMENT_METHODS = [
-  {
-    id: "orange_money",
-    name: "Orange Money",
-    description: "Paiement via Orange Money Guinée",
-    icon: "🟠",
-    color: "border-orange-500/30 hover:border-orange-500/60",
-    activeColor: "border-orange-500 bg-orange-500/10",
-  },
-  {
-    id: "mtn_money",
-    name: "MTN Mobile Money",
-    description: "Paiement via MTN MoMo Guinée",
-    icon: "🟡",
-    color: "border-yellow-500/30 hover:border-yellow-500/60",
-    activeColor: "border-yellow-500 bg-yellow-500/10",
-  },
-  {
-    id: "cash",
-    name: "Espèces (Cash)",
-    description: "Paiement à la livraison ou au retrait",
-    icon: "💵",
-    color: "border-green-500/30 hover:border-green-500/60",
-    activeColor: "border-green-500 bg-green-500/10",
-  },
-];
+
 
 export default function CheckoutPage() {
   const { state, totalAmount, clearCart, updateQuantity, removeItem } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState("cash");
   const [form, setForm] = useState({ name: "", phone: "", email: "", notes: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<{ id: number } | null>(null);
@@ -64,7 +38,7 @@ export default function CheckoutPage() {
           customerEmail: form.email,
           items: JSON.stringify(state.items),
           totalAmount,
-          paymentMethod,
+          paymentMethod: "contact",
           notes: form.notes,
         }),
       });
@@ -102,16 +76,6 @@ export default function CheckoutPage() {
           <p className="text-gray-400 text-sm mb-8">
             Merci <strong className="text-white">{form.name}</strong>! Nous avons reçu votre commande et vous contacterons au <strong className="text-[#D4AF37]">{form.phone}</strong> pour confirmer.
           </p>
-          {paymentMethod === "orange_money" && (
-            <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-6 text-sm text-orange-300">
-              📱 Envoyez le paiement au numéro Orange Money qui vous sera communiqué par SMS.
-            </div>
-          )}
-          {paymentMethod === "mtn_money" && (
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-6 text-sm text-yellow-300">
-              📱 Envoyez le paiement au numéro MTN MoMo qui vous sera communiqué par SMS.
-            </div>
-          )}
           <Link
             href="/menu"
             className="inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1115] px-8 py-3 rounded-xl font-bold text-sm transition-colors"
@@ -208,48 +172,83 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Payment Method */}
-              <div className="glass-card rounded-2xl p-6">
-                <h3 className="text-white font-bold text-lg mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Mode de Paiement
-                </h3>
-                <div className="space-y-3">
-                  {PAYMENT_METHODS.map((method) => (
-                    <motion.button
-                      key={method.id}
-                      type="button"
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      onClick={() => setPaymentMethod(method.id)}
-                      className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all text-left ${
-                        paymentMethod === method.id ? method.activeColor : `bg-[#0F1115]/30 ${method.color}`
-                      }`}
-                    >
-                      <span className="text-2xl">{method.icon}</span>
-                      <div className="flex-1">
-                        <p className="text-white font-semibold text-sm">{method.name}</p>
-                        <p className="text-gray-400 text-xs">{method.description}</p>
-                      </div>
-                      {paymentMethod === method.id && (
-                        <CheckCircle size={20} className="text-[#D4AF37]" />
-                      )}
-                    </motion.button>
-                  ))}
-                </div>
+              {/* Contact Restaurant */}
+<div className="glass-card rounded-2xl p-6">
+  <h3
+    className="text-white font-bold text-lg mb-5"
+    style={{ fontFamily: "'Playfair Display', serif" }}
+  >
+    Contactez le Restaurant
+  </h3>
 
-                {(paymentMethod === "orange_money" || paymentMethod === "mtn_money") && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-xl"
-                  >
-                    <p className="text-[#F4E8C1] text-xs leading-relaxed">
-                      💡 <strong>Instructions:</strong> Après validation de votre commande, vous recevrez un SMS avec le numéro {paymentMethod === "orange_money" ? "Orange Money" : "MTN MoMo"} pour effectuer le paiement. La commande sera confirmée après réception.
-                    </p>
-                  </motion.div>
-                )}
-              </div>
-            </div>
+  <p className="text-gray-400 text-sm mb-6">
+    Pour confirmer votre commande, contactez directement notre équipe.
+  </p>
+
+  <div className="space-y-4">
+
+    <a
+      href="tel:+224621567676"
+      className="flex items-center gap-4 p-4 rounded-xl border border-[#D4AF37]/20 hover:border-[#D4AF37] transition-all"
+    >
+      <Phone className="text-[#D4AF37]" size={22} />
+
+      <div>
+        <p className="text-white font-semibold">
+          Appelez-nous
+        </p>
+
+        <p className="text-gray-400 text-sm">
+          +224 621 56 76 76
+        </p>
+      </div>
+    </a>
+
+
+    <a
+      href="https://wa.me/224623381252"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-4 p-4 rounded-xl border border-green-500/20 hover:border-green-500 transition-all"
+    >
+      <span className="text-2xl">
+        💬
+      </span>
+
+      <div>
+        <p className="text-white font-semibold">
+          Commander sur WhatsApp
+        </p>
+
+        <p className="text-gray-400 text-sm">
+          Réponse rapide
+        </p>
+      </div>
+    </a>
+
+
+    <a
+      href="mailto:delicesdafricanagn.com"
+      className="flex items-center gap-4 p-4 rounded-xl border border-blue-500/20 hover:border-blue-500 transition-all"
+    >
+      <span className="text-2xl">
+        ✉️
+      </span>
+
+      <div>
+        <p className="text-white font-semibold">
+          Envoyer un Email
+        </p>
+
+        <p className="text-gray-400 text-sm">
+          contact@delicesdafricanagn.com
+        </p>
+      </div>
+    </a>
+    </div>
+
+  </div>
+  </div>
 
             {/* Right: Order Summary */}
             <div className="lg:col-span-2">
