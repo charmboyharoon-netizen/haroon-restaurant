@@ -145,7 +145,7 @@ export default function CheckoutPage() {
                       type="tel"
                       value={form.phone}
                       onChange={(e) => handleChange("phone", e.target.value)}
-                      placeholder="+224 621 56 76 76"
+                      placeholder="+224 623 38 12 52"
                       className="w-full bg-[#0F1115]/50 border border-[#D4AF37]/20 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50"
                     />
                   </div>
@@ -188,7 +188,7 @@ export default function CheckoutPage() {
   <div className="space-y-4">
 
     <a
-      href="tel:+224621567676"
+      href="tel:+224623381252"
       className="flex items-center gap-4 p-4 rounded-xl border border-[#D4AF37]/20 hover:border-[#D4AF37] transition-all"
     >
       <Phone className="text-[#D4AF37]" size={22} />
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
         </p>
 
         <p className="text-gray-400 text-sm">
-          +224 621 56 76 76
+          +224 623 38 12 52
         </p>
       </div>
     </a>
