@@ -1,15 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ShoppingCart, Plus, Minus, Star, Flame, Search, Filter } from "lucide-react";
-import { MENU_ITEMS, MENU_CATEGORIES } from "@/lib/constants";
+import { MENU_CATEGORIES} from "@/lib/constants";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/utils";
 import { showToast } from "@/components/ui/Toaster";
 
-function MenuItemCard({ item, index }: { item: typeof MENU_ITEMS[0]; index: number }) {
+function MenuItemCard({ item, index }: { item: any; index: number }) {
   const { addItem, state, updateQuantity, openCart } = useCart();
   const cartItem = state.items.find((i) => i.id === item.id);
   const qty = cartItem?.quantity || 0;
@@ -101,10 +101,24 @@ function MenuItemCard({ item, index }: { item: typeof MENU_ITEMS[0]; index: numb
 
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const { totalItems, toggleCart } = useCart();
+const [searchQuery, setSearchQuery] = useState("");
+const [menuItems, setMenuItems] = useState<any[]>([]);
+const { totalItems, toggleCart } = useCart();
+useEffect(() => {
+  const fetchMenu = async () => {
+    try {
+      const res = await fetch("/api/menu");
+      const data = await res.json();
+      setMenuItems(data);
+    } catch (error) {
+      console.error("Failed to load menu:", error);
+    }
+  };
 
-  const filteredItems = MENU_ITEMS.filter((item) => {
+  fetchMenu();
+}, []);
+
+  const filteredItems = menuItems.filter((item) => {
     const matchCategory = activeCategory === "all" || item.category === activeCategory;
     const matchSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

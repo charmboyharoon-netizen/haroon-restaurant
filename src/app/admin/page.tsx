@@ -12,7 +12,7 @@ import {
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { formatPrice } from "@/lib/utils";
 
-type Tab = "overview" | "orders" | "reservations" | "rooms" | "contacts";
+type Tab = "overview" | "orders" | "reservations" | "rooms" | "contacts" | "menu";
 
 interface Order {
   id: number;
@@ -123,6 +123,10 @@ export default function AdminDashboard() {
         roomsRes.json(),
         contactsRes.json(),
       ]);
+      console.log("ORDERS:", ordersData);
+console.log("RESERVATIONS:", reservationsData);
+console.log("ROOMS:", roomsData);
+console.log("CONTACTS:", contactsData);
 
       setOrders(ordersData);
       setReservations(reservationsData);
@@ -183,6 +187,7 @@ export default function AdminDashboard() {
     { id: "reservations" as Tab, label: "Réservations", icon: Calendar, count: stats?.reservations.pending },
     { id: "rooms" as Tab, label: "Chambres", icon: BedDouble, count: stats?.rooms.pending },
     { id: "contacts" as Tab, label: "Messages", icon: Users, count: stats?.contacts.total },
+    { id: "menu" as Tab, label: "Menu", icon: Utensils },
   ];
 
   return (
