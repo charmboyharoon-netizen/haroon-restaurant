@@ -35,7 +35,7 @@ function MenuItemCard({ item, index }: { item: any; index: number }) {
     >
       <div className="relative h-52 overflow-hidden">
         <Image
-          src={item.image || ""}
+          src={item.image || "/placeholder.png"}
           alt={item.name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"

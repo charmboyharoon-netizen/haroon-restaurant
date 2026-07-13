@@ -106,23 +106,93 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuItems, setMenuItems] = useState<any[]>([]);
+  const [showMenuForm, setShowMenuForm] = useState(false);
+  const [editingMenuItem, setEditingMenuItem] = useState<any | null>(null);
+  const [newMenuItem, setNewMenuItem] = useState({
+  name: "",
+  nameEn: "",
+  description: "",
+  price: "",
+  category: "",
+  image: "",
+});
+
+const addMenuItem = async () => {
+  try {
+    const res = await fetch(
+      editingMenuItem
+        ? `/api/menu?id=${editingMenuItem.id}`
+        : "/api/menu",
+      {
+        method: editingMenuItem ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMenuItem),
+      }
+    );
+
+    const data = await res.json();
+
+    if (editingMenuItem) {
+      setMenuItems(
+        menuItems.map((item) =>
+          item.id === editingMenuItem.id ? data : item
+        )
+      );
+      setEditingMenuItem(null);
+    } else {
+      setMenuItems([...menuItems, data]);
+    }
+
+    setShowMenuForm(false);
+
+    setNewMenuItem({
+      name: "",
+      nameEn: "",
+      description: "",
+      price: "",
+      category: "",
+      image: "",
+    });
+  } catch (error) {
+    console.error("Failed to save menu item:", error);
+  }
+};
+const deleteMenuItem = async (id: number) => {
+  try {
+    await fetch(`/api/menu?id=${id}`, {
+      method: "DELETE",
+    });
+
+    setMenuItems(menuItems.filter((item) => item.id !== id));
+
+  } catch (error) {
+    console.error("Failed to delete menu item:", error);
+  }
+};
+
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [ordersRes, reservationsRes, roomsRes, contactsRes] = await Promise.all([
-        fetch("/api/admin/orders"),
-        fetch("/api/admin/reservations"),
-        fetch("/api/admin/rooms"),
-        fetch("/api/admin/contacts"),
-      ]);
+      const [ordersRes, reservationsRes, roomsRes, contactsRes, menuRes] = await Promise.all([
+  fetch("/api/admin/orders"),
+  fetch("/api/admin/reservations"),
+  fetch("/api/admin/rooms"),
+  fetch("/api/admin/contacts"),
+  fetch("/api/menu"),
+]); 
 
-      const [ordersData, reservationsData, roomsData, contactsData] = await Promise.all([
+      const [ordersData, reservationsData, roomsData, contactsData, menuData] = await Promise.all([
         ordersRes.json(),
         reservationsRes.json(),
         roomsRes.json(),
         contactsRes.json(),
+        menuRes.json(),
       ]);
+
       console.log("ORDERS:", ordersData);
 console.log("RESERVATIONS:", reservationsData);
 console.log("ROOMS:", roomsData);
@@ -132,6 +202,7 @@ console.log("CONTACTS:", contactsData);
       setReservations(reservationsData);
       setRooms(roomsData);
       setContacts(contactsData);
+      setMenuItems(menuData);
 
       setStats({
         orders: {
@@ -516,6 +587,142 @@ console.log("CONTACTS:", contactsData);
               </div>
             </motion.div>
           )}
+
+          {/* Menu Tab */}
+{activeTab === "menu" && (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+    <div className="flex items-center justify-between">
+  <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
+    Gestion du Menu
+  </h1>
+
+ <button
+  onClick={() => setShowMenuForm(true)}
+  className="bg-[#D4AF37] text-black px-4 py-2 rounded-xl font-semibold"
+>
+  + Ajouter un plat
+</button>
+</div>
+{showMenuForm && (
+  <div className="bg-[#141720] border border-[#D4AF37]/10 rounded-2xl p-5 space-y-4">
+
+    <h2 className="text-white text-xl font-semibold">
+      Ajouter un plat
+    </h2>
+
+    <input
+      placeholder="Nom du plat"
+      className="w-full bg-black/20 text-white p-3 rounded-xl"
+      value={newMenuItem.name}
+      onChange={(e) =>
+        setNewMenuItem({
+          ...newMenuItem,
+          name: e.target.value,
+        })
+      }
+    />
+
+    <input
+      placeholder="Nom en anglais"
+      className="w-full bg-black/20 text-white p-3 rounded-xl"
+      value={newMenuItem.nameEn}
+      onChange={(e) =>
+        setNewMenuItem({
+          ...newMenuItem,
+          nameEn: e.target.value,
+        })
+      }
+    />
+
+    <textarea
+      placeholder="Description"
+      className="w-full bg-black/20 text-white p-3 rounded-xl"
+      value={newMenuItem.description}
+      onChange={(e) =>
+        setNewMenuItem({
+          ...newMenuItem,
+          description: e.target.value,
+        })
+      }
+    />
+
+    <input
+      placeholder="Prix"
+      type="number"
+      className="w-full bg-black/20 text-white p-3 rounded-xl"
+      value={newMenuItem.price}
+      onChange={(e) =>
+        setNewMenuItem({
+          ...newMenuItem,
+          price: e.target.value,
+        })
+      }
+    />
+
+    <input
+      placeholder="Catégorie"
+      className="w-full bg-black/20 text-white p-3 rounded-xl"
+      value={newMenuItem.category}
+      onChange={(e) =>
+        setNewMenuItem({
+          ...newMenuItem,
+          category: e.target.value,
+        })
+      }
+    />
+<button
+  onClick={addMenuItem}
+  className="bg-[#D4AF37] text-black px-5 py-3 rounded-xl font-semibold"
+>
+  Enregistrer le plat
+</button>
+
+  </div>
+)}
+
+    <div className="grid gap-4">
+      {menuItems.map((item) => (
+        <div key={item.id} className="bg-[#141720] border border-[#D4AF37]/10 rounded-2xl p-5">
+          <p className="text-white font-semibold">{item.name}</p>
+          <p className="text-gray-400 text-sm">{item.description}</p>
+          <p className="text-[#D4AF37] mt-2">{item.price} GNF</p>
+          <div className="flex gap-3 mt-4">
+ <button
+  onClick={() => deleteMenuItem(item.id)}
+  className="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl"
+>
+  Supprimer
+</button>
+
+  <button
+  onClick={() => {
+    setEditingMenuItem(item);
+    setNewMenuItem({
+      name: item.name,
+      nameEn: item.nameEn || "",
+      description: item.description || "",
+      price: item.price.toString(),
+      category: item.category || "",
+      image: item.image || "",
+    });
+    setShowMenuForm(true);
+  }}
+  className="bg-[#D4AF37]/20 text-[#D4AF37] px-4 py-2 rounded-xl"
+>
+  Modifier
+</button>
+</div>
+        </div>
+      ))}
+
+      {menuItems.length === 0 && (
+        <div className="bg-[#141720] border border-[#D4AF37]/10 rounded-2xl p-12 text-center text-gray-500">
+          Aucun élément du menu
+        </div>
+      )}
+    </div>
+  </motion.div>
+)}
 
           {/* Contacts Tab */}
           {activeTab === "contacts" && (
